@@ -20,26 +20,23 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
 
-    def emptyline(self):
-        """Do nothing on empty line"""
-        pass
+    def do_EOF(self, line):
+        """Exits console"""
+        print("")
+        return True
 
-    def do_quit(self, arg):
+    def do_quit(self, line):
         """Quit command to exit the program"""
+        print("Good Bye!")
         return True
 
     def help_quit(self):
-        """Help message for the quit command"""
-        print("Quit command to exit the program")
+        """when two arguments involve"""
+        print('\n'.join(["Quit command to exit the program"]))
 
-    def do_EOF(self, arg):
-        """Exit on EOF (Ctrl-D)"""
-        print()
-        return True
-
-    def help_EOF(self):
-        """Help message for the EOF command"""
-        print("Exit on EOF (Ctrl-D)")
+    def emptyline(self):
+        """ overwriting the emptyline method """
+        return False
 
     def do_create(self, arg):
         """Creates a new instances of a class"""
