@@ -1,4 +1,5 @@
-#!/usr/bin/python3
+#!/usr/bin/python
+
 
 import unittest
 from models.base_model import BaseModel
@@ -51,6 +52,35 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(my_model.id, loaded_model.id)
         self.assertEqual(my_model.created_at, loaded_model.created_at)
         self.assertEqual(my_model.updated_at, loaded_model.updated_at)
+
+    def test_dict_representation(self):
+        my_model = BaseModel()
+        my_model.name = "My_First_Model"
+        my_model.my_number = 89
+
+        my_model_dict = my_model.to_dict()
+        self.assertIsInstance(my_model_dict, dict)
+        self.assertIn('id', my_model_dict)
+        self.assertIn('created_at', my_model_dict)
+        self.assertIn('updated_at', my_model_dict)
+        self.assertIn('__class__', my_model_dict)
+        self.assertEqual(my_model_dict['__class__'], 'BaseModel')
+        self.assertEqual(my_model_dict['name'], 'My_First_Model')
+        self.assertEqual(my_model_dict['my_number'], 89)
+
+    def test_recreate_instance(self):
+        my_model = BaseModel()
+        my_model.name = "My_First_Model"
+        my_model.my_number = 89
+
+        my_model_dict = my_model.to_dict()
+
+        my_new_model = BaseModel(**my_model_dict)
+        self.assertEqual(my_model.id, my_new_model.id)
+        self.assertEqual(my_model.created_at, my_new_model.created_at)
+        self.assertEqual(my_model.updated_at, my_new_model.updated_at)
+        self.assertEqual(my_model.name, my_new_model.name)
+        self.assertEqual(my_model.my_number, my_new_model.my_number)
 
 
 if __name__ == '__main__':
