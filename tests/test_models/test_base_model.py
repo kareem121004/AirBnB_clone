@@ -1,36 +1,50 @@
 #!/usr/bin/python3
-"""
-Defines unit tests for the Amenity class
-"""
-from unittest import TestCase
-from datetime import datetime
-from models.base_model import BaseModel
-from os.path import isfile
+import unittest
+    from models.base_model import BaseModel
+    from models.engine.file_storage import FileStorage
+    import os
 
 
-class TestBaseModel(TestCase):
-    """
-    Test class with methods testing the Amenity class
-    """
+    class TestBaseModel(unittest.TestCase):
+        def setUp(self):
+            self.storage = FileStorage()
+            self.storage.reload()
+            models.storage = self.storage
 
-    def test_save(self):
-        """ Test the save method """
-        obj = BaseModel()
-        updated_at = datetime.now()
-        first_update = obj.updated_at
-        # Compare before calling save
-        self.assertEqual(obj.updated_at.date(), updated_at.date())
-        obj.save()
-        updated_at = datetime.now()
-        second_update = obj.updated_at
-        # Compare after calling save
-        self.assertEqual(obj.updated_at.date(), updated_at.date())
-        self.assertTrue(isfile("file.json"))
-        self.assertLess(first_update, second_update, "Error")
+        def tearDown(self):
+            try:
+                os.remove("file.json")
+            except FileNotFoundError:
+                pass
 
-    def test_to_dict(self):
-        """ Test the to_dict method """
-        expected = ("id", "created_at", "updated_at", "__class__")
-        obj = BaseModel()
-        actual = obj.to_dict()
-        self.assertEqual(sorted(tuple(actual.keys())), sorted(expected))
+        def test_instance_creation(self):
+            my_model = BaseModel()
+            self.assertIsInstance(my_model, BaseModel)
+            self.assertIsNotNone(my_model.id)
+            self.assertIsNotNone(my_model.created_at)
+            self.assertIsNotNone(my_model.updated_at)
+
+        def test_save_method(self):
+            my_model = BaseModel()
+            initial_updated_at = my_model.updated_at
+            my_model.save()
+            self.assertNotEqual(initial_updated_at, my_model.updated_at)
+
+        def test_to_dict_method(self):
+            my_model = BaseModel()
+            model_dict = my_model.to_dict()
+            self.assertIsInstance(model_dict, dict)
+            self.assertIn('id', model_dict)
+            self.assertIn('created_at', model_dict)
+            self.assertIn('updated_at', model_dict)
+            self.assertIn('__class__', model_dict)
+            self.assertEqual(model_dict['__class__'], 'BaseModel')
+
+        def test_reload_method(self):
+            my_model = BaseModel()
+            self.storage.save()
+            self.storage.reload()
+            loaded_model = models.storage.all()['BaseModel.' + my_model.id]
+            self.assertEqual(my_model.id, loaded_model.id)
+            self.assertEqual(my_model.created_at, loaded_model.created_at)
+            self.assertEqual(my_model.updated_at, loaded_model.updated_at)
