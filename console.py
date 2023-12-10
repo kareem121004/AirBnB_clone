@@ -27,6 +27,18 @@ class HBNBCommand(cmd.Cmd):
         """Do nothing when empty line is entered"""
         pass
 
+    def do_create(self, arg):
+        """Creates a new instances of a class"""
+        if not arg:
+            print("** class name missing **")
+            return
+        try:
+            new_instance = eval(arg)()
+            new_instance.save()
+            print(new_instance.id)
+        except NameError:
+            print("** class doesn't exist **")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
