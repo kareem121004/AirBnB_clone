@@ -39,6 +39,23 @@ class HBNBCommand(cmd.Cmd):
         except NameError:
             print("** class doesn't exist **")
 
+    def do_show(self, arg):
+        """Print the string representation of an instance"""
+        args = arg.split()
+        if not args or args[0] == "":
+            print("** class name missing **")
+            return
+        try:
+            class_name = args[0]
+            obj_id = args[1]
+            key = "{}.{}".format(class_name, obj_id)
+            print(storage.all().get(key, "** no instance found **"))
+        except IndexError:
+            if len(args) == 1:
+                print("** instance id missing **")
+            else:
+                print("** class doesn't exist **")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
