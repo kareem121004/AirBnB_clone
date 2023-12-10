@@ -79,20 +79,24 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, arg):
         """Delete an instance based on the class name and id"""
         args = arg.split()
-        if len(arg) < 1:
+        if not args or args[0] == "":
             print("** class name missing **")
-        elif arg[0] not in class_dict:
-            print("** class doesn't exist **")
-        elif len(arg) < 2:
-            print("** instance id missing **")
-        else:
-            key = f"{arg[0]}.{arg[1]}"
+            return
+        try:
+            class_name = args[0]
+            obj_id = args[1]
+            key = "{}.{}".format(class_name, obj_id)
             objects = storage.all()
-            if key not in storage.all().keys():
-                print("** no instance found **")
-            else:
+            if key in objects:
                 del objects[key]
                 storage.save()
+            else:
+                print("** no instance found **")
+        except IndexError:
+            if len(args) == 1:
+                print("** instance id missing **")
+            else:
+                print("** class doesn't exist **")
 
     def do_all(self, arg):
         """Print all string representation of all instances"""
@@ -125,8 +129,8 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
         else:
-            key = f"{arg[0]}.{arg[1]}"
-            if key not in storage.all().keys():
+            str = f"{arg[0]}.{arg[1]}"
+            if str not in storage.all().keys():
                 print("** no instance found **")
             elif len(arg) < 3:
                 print("** attribute name missing **")
@@ -135,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
                 return
             else:
-                setattr(storage.all()[key], arg[2], arg[3])
+                setattr(storage.all()[str], arg[2], arg[3])
                 storage.save()
 
 
