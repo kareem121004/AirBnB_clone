@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+"""An interactive shell?"""
+
 import cmd
 
 class HBNBCommand(cmd.Cmd):
