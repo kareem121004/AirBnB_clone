@@ -5,27 +5,25 @@
 import cmd
 
 class HBNBCommand(cmd.Cmd):
-    """Defines a class which is the entry point command interpreter"""
-    intro = "Welcome to the AirBnB clone console! Type 'help' to list commands. \n"
-    prompt = "(hbnb) "
+     prompt = '(hbnb)  '
+
+    def do_EOF(self, line):
+        """Exits console"""
+        print("")
+        return True
 
     def do_quit(self, line):
-        """Quit the interpreter"""
+        """Quit command to exit the program"""
+        print("Good Bye!")
         return True
 
     def help_quit(self):
-        """help message for quit"""
-        print("Quit command to exit the program\n")
-        return
-
-    def do_EOF(self, line):
-        """Cleanly exits the"""
-        print()
-        return True
+        """when two arguments involve"""
+        print('\n'.join(["Quit command to exit the program"]))
 
     def emptyline(self):
-        """Do nothing when empty line is entered"""
-        pass
+        """ overwriting the emptyline method """
+        return False
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
