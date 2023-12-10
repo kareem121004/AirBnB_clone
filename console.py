@@ -14,6 +14,16 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+class_dict = {
+    "BaseModel": BaseModel,
+    "User": User,
+    "Place": Place,
+    "Amenity": Amenity,
+    "City": City,
+    "Review": Review,
+    "State": State
+}
+
 
 class HBNBCommand(cmd.Cmd):
     """Defines a class which is the entry point command interpreter"""
@@ -105,6 +115,32 @@ class HBNBCommand(cmd.Cmd):
                 print(filtered_objects)
             except IndexError:
                 print("** class doesn't exist **")
+
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id"""
+        args = arg.split()
+        if len(arg) < 1:
+            print("** class name missing **")
+            return
+        elif arg[0] not in class_dict:
+            print("** class doesn't exist **")
+            return
+        elif len(arg) < 2:
+            print("** instance id missing **")
+            return
+        else:
+            str = f"{arg[0]}.{arg[1]}"
+            if str not in storage.all().keys():
+                print("** no instance found **")
+            elif len(arg) < 3:
+                print("** attribute name missing **")
+                return
+            elif len(arg) < 4:
+                print("** value missing **")
+                return
+            else:
+                setattr(storage.all()[str], arg[2], arg[3])
+                storage.save()
 
 
 if __name__ == '__main__':
