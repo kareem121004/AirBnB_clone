@@ -88,6 +88,24 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
+    def do_all(self, arg):
+        """Print all string representation of all instances"""
+        args = arg.split()
+        objects = storage.all()
+        if not args or args[0] == "":
+            print([str(obj) for obj in objects.values()])
+        else:
+            try:
+                class_name = args[0]
+                filtered_objects = [
+                        str(obj)
+                        for key, obj in objects.items()
+                        if key.startswith(class_name)
+                ]
+                print(filtered_objects)
+            except IndexError:
+                print("** class doesn't exist **")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
