@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 import os
 
+
 class TestBaseModel(unittest.TestCase):
     def setUp(self):
         # Create a unique FileStorage instance for testing
@@ -50,6 +51,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(my_model.id, loaded_model.id)
         self.assertEqual(my_model.created_at, loaded_model.created_at)
         self.assertEqual(my_model.updated_at, loaded_model.updated_at)
+
 
 if __name__ == '__main__':
     unittest.main()

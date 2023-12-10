@@ -14,6 +14,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     """The file storage engine class, that is;
        A class that serialize and deserialize instances to a JSON file

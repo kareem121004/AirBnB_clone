@@ -4,9 +4,11 @@
 
 import cmd
 
+
 class HBNBCommand(cmd.Cmd):
     """Defines a class which is the entry point command interpreter"""
     prompt = "(hbnb) "
+
     def do_quit(self, line):
         """Quit the interpreter"""
         return True
@@ -24,6 +26,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Do nothing when empty line is entered"""
         pass
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
